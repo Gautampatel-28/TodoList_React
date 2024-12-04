@@ -1,24 +1,43 @@
-import logo from './logo.svg';
+import React, { useState } from "react";
 import './App.css';
+import InputContainer from "./assets/InputContainer.jsx";
+import TodoContainer from "./assets/TodoContainer";
 
 function App() {
+  const [inputVal, setInputVal] = useState("");
+  const [todos, setTodos] = useState([]);
+
+  function writeTodo(e) {
+    setInputVal(e.target.value);
+  }
+
+  function addTodo() {
+    if (inputVal !== '') {
+      setTodos((prevTodos) => [...prevTodos, inputVal]);
+      setInputVal('');
+    }
+  }
+
+
+  function delTodo(todoIndex){
+    setTodos((prevTodos) => 
+      prevTodos.filter((prevTodos, prevTodosIndex) => {
+        return prevTodosIndex != todoIndex  
+      })
+    );
+  }
+
+  console.log(todos);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <main>
+        <h1>ToDo List</h1>
+        <InputContainer inputVal={inputVal} writeTodo={writeTodo} addTodo={addTodo} />
+        <TodoContainer todos={todos} delTodo={delTodo}/>
+      </main>
+    </>
   );
 }
 
